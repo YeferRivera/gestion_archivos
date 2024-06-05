@@ -1,0 +1,49 @@
+{
+  "name": "gagu",
+  "version": "0.0.57",
+  "description": "A web-based file management system",
+  "bin": {
+    "gagu": "./bin/gagu"
+  },
+  "scripts": {
+    "build:npm": "./build-npm.sh",
+    "build:pkg": "./build-pkg.sh"
+  },
+  "pkg": {
+    "assets": [
+      "bin/public/**/*"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chisw/gagu.git"
+  },
+  "keywords": [
+    "gagu",
+    "file management"
+  ],
+  "author": "Chisw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Chisw/gagu/issues"
+  },
+  "homepage": "https://github.com/Chisw/gagu#readme",
+  "dependencies": {
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/serve-static": "^3.0.0",
+    "chalk": "4.1.2",
+    "express-zip": "^3.0.0",
+    "gm": "^1.23.1",
+    "luxon": "^3.0.4",
+    "md5": "^2.3.0",
+    "minimist": "^1.2.6",
+    "music-metadata": "^7.14.0",
+    "node-disk-info": "^1.3.0",
+    "piexifjs": "^1.0.6",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "thumbsupply": "^0.4.0"
+  }
+}

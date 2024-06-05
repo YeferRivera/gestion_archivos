@@ -1,0 +1,35 @@
+---
+import DocList from './DocList.astro'
+import '../css/sider.css'
+
+const year = new Date().getFullYear()
+---
+
+<div class="fixed z-10 top-0 left-0 bottom-0 hidden xl:block mt-12 px-12 py-10 w-[300px] overflow-y-auto bg-gray-100">
+  <DocList />
+  <div>
+    <span class="text-xs text-gray-400">©{year} GAGU.IO</span>
+  </div>
+</div>
+
+<input id="doc-sider-switch" type="checkbox" class="absolute w-0 h-0 opacity-0" />
+
+<div
+  id="mobile-doc-sider"
+  class="block xl:hidden fixed z-20 top-0 bottom-0 left-0 p-4 pb-24 w-[240px] bg-white bg-opacity-90 backdrop-blur transition-transform duration-300 shadow-xl overflow-y-auto"
+>
+  <DocList />
+</div>
+
+<label
+  for="doc-sider-switch"
+  id="mobile-doc-sider-mask"
+  class="block fixed z-10 inset-0 bg-black bg-opacity-10"
+>
+</label>
+
+<label
+  for="doc-sider-switch"
+  class="doc-sider-switch-button block xl:hidden fixed z-30 left-0 bottom-0 m-4 w-12 h-12 rounded-full bg-white shadow select-none bg-center bg-no-repeat cursor-pointer border"
+>
+</label>

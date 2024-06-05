@@ -1,0 +1,92 @@
+---
+import Page from './Page.astro'
+import Header from './Header.astro'
+import DocSider from './DocSider.astro'
+import DocTOC from './DocTOC.astro'
+import { getDocList, getIsActive } from '../utils'
+import '../css/markdown.css'
+
+const { frontmatter } = Astro.props
+const pathname = new URL(Astro.request.url).pathname;
+const docList = getDocList(pathname)
+const activeIndex = docList.findIndex(n => getIsActive(n.path, pathname))
+const prevDoc = docList[activeIndex - 1]
+const nextDoc = docList[activeIndex + 1]
+---
+
+<Page title={frontmatter.title}>
+  <Header />
+  <DocSider />
+  <div class="mx-auto px-4 pt-10 pb-20 max-w-[640px]">
+    <div class="markdown-body unreset">
+      <slot />
+    </div>
+    <div class="mt-12 flex justify-between">
+      {prevDoc ? (
+        <a
+          href={prevDoc.path}
+          class="border px-4 py-2 w-40 rounded-lg text-xs group hover:border-blue-700"
+        >
+          <p class="text-gray-400">← Previous</p>
+          <p class="font-bold group-hover:text-blue-700">{prevDoc.title}</p>
+        </a>
+      ) : <span />}
+      {nextDoc ? (
+        <a
+          href={nextDoc.path}
+          class="border px-4 py-2 w-40 rounded-lg text-xs group hover:border-blue-700 text-right"
+        >
+          <p class="text-gray-400">Next →</p>
+          <p class="font-bold group-hover:text-blue-700">{nextDoc.title}</p>
+        </a>
+      ) : <span />}
+    </div>
+  </div>
+  <DocTOC />
+</Page>
+
+<script>
+import { DOWNLOAD_LIST } from '../utils'
+
+document.querySelectorAll('.download-list')
+  .forEach(div => {
+    const html = `
+      <div class="my-4 py-2 bg-zinc-600 rounded-md">
+        ${DOWNLOAD_LIST
+          .map(({ svg, title, size, url }) => `
+            <a
+              class="no-customized relative px-4 py-2 flex justify-between text-sm items-center hover:bg-zinc-700 active:bg-zinc-800"
+              href="${url}"
+            >
+              <span class="text-white">${svg}&nbsp;&nbsp;${title}</span>
+              <span class="text-white">${size}</span>
+            </a>
+          `)
+          .join('')}
+      </div>
+    `
+    div.innerHTML = html
+  })
+</script>
+
+<script is:inline>
+// blank anchor target
+document.querySelectorAll('.markdown-body a[href^=http]')
+  .forEach(a => a.setAttribute('target', '_blank'));
+
+// hotkeys table
+document.querySelectorAll(`
+  .hotkeys-table-container tr td:nth-child(2),
+  .hotkeys-table-container tr td:nth-child(3)
+`).forEach(td => {
+  const inner = td.textContent
+    .split(' + ')
+    .map(text => {
+      const prefix = text === 'Shift' ? '⇧ ' : ''
+      const content = `${prefix}${text.replace('Click', '').replace('Backspace', '').replace('Space', '_')}`
+      return `<div class="key key-${text.toLowerCase()}" data-content="${content}"></div>`
+    })
+    .join('&nbsp;')
+  td.innerHTML = `<div class="hotkeys">${inner}</div>`
+})
+</script>

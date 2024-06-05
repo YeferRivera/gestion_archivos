@@ -1,0 +1,33 @@
+---
+import { getDocList, getIsActive } from '../utils'
+
+const pathname = new URL(Astro.request.url).pathname;
+const docList = getDocList(pathname)
+
+const groupedDocList = Array.from(new Set(docList.map(o => o.group))).map(group => {
+  return {
+    group,
+    children: docList.filter(o => o.group === group),
+  }
+})
+---
+<div>
+  {groupedDocList.map(({ group, children }) => (
+    <div class="mb-8">
+      <h2 class="mb-2 font-bold">{group}</h2>
+      <div>
+        {children.map(({ title, path }) => (
+          <a
+            class={`
+              mb-2 block text-sm text-gray-400 hover:text-blue-500
+              ${getIsActive(path, pathname) ? 'font-bold text-blue-700' : ''}
+            `}
+            href={path}
+          >
+            {title}
+          </a>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
